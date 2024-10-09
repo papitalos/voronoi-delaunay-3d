@@ -1,0 +1,31 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master  # ou a branch que você está utilizando
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'  # Ou a versão do Node.js que você está utilizando
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build the project
+      run: npm run build -- --configuration production --base-href /Voronoi-Delaunay-3D/
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./dist/voronoi-delaunay
