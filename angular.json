@@ -41,7 +41,8 @@
               "node_modules/primeng/resources/primeng.min.css", 
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "baseHref": "/Voronoi-Delaunay-3D/"
           },
           "configurations": {
             "production": {

@@ -125,7 +125,7 @@ export class ThreeDComponent implements AfterViewInit, OnDestroy {
 
     return layer.points.map((point) => {
       const normalizedX = (point[0] - canvasWidth / 2) * scaleFactor;
-      const normalizedY = layer.zHeight; // Use zHeight da camada
+      const normalizedY = layer.zHeight * 0.25; // Use zHeight da camada
       const normalizedZ = -(point[1] - canvasHeight / 2) * scaleFactor;
       return { x: normalizedX, y: normalizedY, z: normalizedZ };
     });
