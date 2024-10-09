@@ -1,0 +1,29 @@
+.main{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100dvh;
+    width: 100dvw;
+    background-color: var(--background);
+    overflow: hidden;
+    & .container{
+        width: 100%;
+        height: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    & footer{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        & app-card{
+            order: 1;
+        }
+        & app-three-d{
+            order: 2;
+        }
+    }
+}

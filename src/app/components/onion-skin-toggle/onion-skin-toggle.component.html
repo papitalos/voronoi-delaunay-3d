@@ -1,0 +1,31 @@
+<!-- onion-skin-toggle.component.html -->
+<button class="icon onion-skin-toggle" (click)="toggleOnionSkin()">
+  <i *ngIf="onionSkinActive" class="ph-duotone ph-eye-slash"></i>
+  <i *ngIf="!onionSkinActive" class="ph-duotone ph-eye"></i>
+</button>
+
+<div *ngIf="onionSkinActive" class="onion-skin-layers">
+  <div
+    *ngFor="let layer of getVisibleLayers(); let i = index"
+    class="onion-skin-layer"
+  >
+    <canvas
+      #voronoiCanvas
+      [width]="canvasWidth"
+      [height]="canvasHeight"
+      [style.opacity]="getOpacityForLayer(i)"
+      [style.position]="'absolute'"
+      [style.top]="0"
+      [style.left]="0"
+    ></canvas>
+    <canvas
+      #delaunayCanvas
+      [width]="canvasWidth"
+      [height]="canvasHeight"
+      [style.opacity]="getOpacityForLayer(i)"
+      [style.position]="'absolute'"
+      [style.top]="0"
+      [style.left]="0"
+    ></canvas>
+  </div>
+</div>

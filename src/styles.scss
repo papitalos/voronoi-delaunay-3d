@@ -1,1 +1,103 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Exo+2:ital,wght@0,100..900;1,100..900&family=Fredoka:wght@300..700&family=Libre+Bodoni:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital@0;1&family=Sarina&family=Silkscreen:wght@400;700&display=swap');
+
+:root{
+    /* Cores de Texto */
+    --text: #F2F2F2;            
+    --text-secondary: #5b5958;  
+
+    /* Cores de Fundo */
+    --background: #1A1A1A;          
+    --background-secondary: #2E2B2A; 
+
+    /* Cores de Borda e Sombra */
+    --border: #474646;    
+    --shadow: #151414;   
+
+    /* Cores Primárias e Secundárias */
+    --primary: #AC7C30;   
+    --secondary: #9E8F68; 
+
+    /* Cores de Acento */
+    --accent: #838077;        
+    --accent-light: #A39F95;
+    --accent-dark: #6E6B65;   
+
+    /* Cor de Detalhe */
+    --detail: #AC7C30;    
+
+    /* Cores das Linhas */
+    --delaunay-lines: rgba(255, 255, 255, 0.5); 
+    --voronoi-lines: #AC7C30;                   
+
+    /* Cores de Estado */
+    --hover: #7f756c;    /* Cor para elementos em hover */
+    --disabled: #2e2b2b; /* Cor para elementos desabilitados */
+    --enabled: #5C5B5B;  /* Cor para elementos habilitados */
+
+    /* Cores de Status */
+    --success: #4CAF50;  /* Verde para sucesso */
+    --warning: #FFC107;  /* Amarelo para aviso */
+    --error: #F44336;    /* Vermelho para erro */
+}
+
+
+body {
+    margin:0;
+    padding:0;
+    background-color: var(--background);
+    color: var(--text);
+}
+
+button.primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-secondary);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 16px;
+}
+button.secondary{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background);
+    color: var(--text);
+    border:none;
+    border-radius: 8px;
+    padding: 8px 16px;
+}
+button.icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    color: var(--text);
+    border:none;
+    border-radius: 8px;
+    padding: 8px 8px;
+    font-size: 1.1rem;
+    transition: all 0.3s; 
+    & i{
+        transition: all 0.3s;
+    }
+}
+button.icon:hover{
+    cursor: pointer;
+    & i{
+        transition: all 0.3s;
+        color: var(--accent-light);
+        font-size: 1.3rem;
+    }
+}
+
+button.primary:hover, button.secondary:hover{
+    transition: all 0.3s;
+    background-color: var(--hover);
+    cursor: pointer;
+}
+
+*{
+    font-family: 'Libre Bodoni','Playfair Display','Sarina','Fredoka','Audiowide','Exo 2', cursive;
+}

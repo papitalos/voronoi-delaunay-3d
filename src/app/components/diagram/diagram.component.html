@@ -1,0 +1,53 @@
+<div class="content">
+  <header class="header">
+    <div class="diagram-btns">
+    
+
+      <p-toggleButton
+        onLabel="Voronoi"
+        offLabel="Voronoi"
+        [(ngModel)]="display.voronoi"
+        (onChange)="updateDiagrams()"
+        (ngModelChange)="onDisplayChange()"
+      >
+        <ng-template pTemplate="icon">
+          <i class="ph-duotone ph-square"></i>
+        </ng-template>
+      </p-toggleButton>
+
+      <p-toggleButton
+        onLabel="Delaunay"
+        offLabel="Delaunay"
+        [(ngModel)]="display.delaunay"
+        (onChange)="updateDiagrams()"
+        (ngModelChange)="onDisplayChange()"
+
+      >
+        <ng-template pTemplate="icon">
+          <i class="ph-duotone ph-triangle"></i>
+        </ng-template>
+      </p-toggleButton>
+
+      <button class="primary btn-delete" (click)="deletePoins()">
+        <i class="ph ph-arrow-counter-clockwise"></i>
+      </button>
+
+    </div>
+
+  </header>
+</div>
+
+<canvas
+  #voronoiCanvas
+  id="canvas"
+  [width]="canvasWidth"
+  [height]="canvasHeight"
+>
+</canvas>
+<canvas
+  #delaunayCanvas
+  id="canvas"
+  [width]="canvasWidth"
+  [height]="canvasHeight"
+>
+</canvas>

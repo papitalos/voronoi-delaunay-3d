@@ -1,0 +1,7 @@
+<button (click)="activate3DView()" class="primary btn-3d">
+    <i *ngIf="!is3DActive" class="ph-duotone ph-cube-focus"></i>
+    <i *ngIf="is3DActive" class="ph-duotone ph-caret-double-left"></i>
+
+</button>
+
+<canvas #canvas3D id="canvas3D"></canvas>

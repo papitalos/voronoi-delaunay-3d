@@ -1,0 +1,41 @@
+:host {
+  align-self: flex-end;
+  justify-self: flex-end;
+}
+.onion-skin-toggle {
+  background-color: var(--background-secondary);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 16px;
+  border-radius: 32px;
+  font-size: 1.1rem;
+  z-index: 999999;
+  position: relative;
+}
+
+.onion-skin-layers {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  & .onion-skin-layer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 0;
+
+    & canvas {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+  }
+}

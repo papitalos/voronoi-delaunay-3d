@@ -1,0 +1,68 @@
+<app-onion-skin-toggle></app-onion-skin-toggle>
+
+<button class="primary btn-layer" (click)="toggleLayerList()">
+  <i *ngIf="layerListActive" class="ph-duotone ph-stack-simple"></i>
+  <i *ngIf="!layerListActive" class="ph-duotone ph-stack"></i>
+</button>
+
+<div class="layer-list">
+  <button class="icon btn-add" (click)="addLayer()">
+    <i class="ph-duotone ph-stack-plus"></i>
+  </button>
+  <cdk-drop-list
+    class="layers-drop-list"
+    [cdkDropListData]="layers"
+    (cdkDropListDropped)="drop($event)"
+    [cdkDropListDisabled]="isEditing"
+  >
+      <div
+        class="list-item"
+        *ngFor="let layer of layers"
+        cdkDrag
+        [cdkDragDisabled]="isEditing"
+        [class.active]="layer.id === activeLayerId"
+        [class.editing]="layer.editing"
+        [ngStyle]="getLayerStyles(layer)"
+      >
+        <div class="layer-name" (click)="onLayerNameClick(layer)">
+          <span *ngIf="!layer.editing" (dblclick)="editLayerName(layer)">
+            {{ layer.name }}
+          </span>
+          <input
+            *ngIf="layer.editing"
+            type="text"
+            [(ngModel)]="layer.name"
+            (blur)="finishEditing(layer)"
+            (keydown.enter)="finishEditing(layer)"
+          />
+        </div>
+
+        <button
+          class="icon btn-remove"
+          (click)="removeLayer(layer.id); $event.stopPropagation()"
+          *ngIf="!layer.editing"
+        >
+          <i class="ph-duotone ph-trash"></i>
+        </button>
+
+        <input
+          type="number"
+          class="z-height-input"
+          [(ngModel)]="layer.zHeight"
+          (ngModelChange)="updateZHeight(layer)"
+          
+          (click)="$event.stopPropagation()"
+          *ngIf="!layer.editing"
+        />
+
+        <ng-template cdkDragPreview>
+          <div class="list-item dragging">
+            <i class="ph ph-swap"></i>
+          </div>
+        </ng-template>
+      
+
+      </div>
+   
+  </cdk-drop-list>
+</div>
