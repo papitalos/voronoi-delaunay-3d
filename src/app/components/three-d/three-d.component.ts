@@ -9,7 +9,7 @@ import * as THREE from 'three';
 import { Layer } from '../../interfaces/layer';
 import { Subscription } from 'rxjs';
 import { LayerService } from '../../services/layer-service.service';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { Delaunay } from 'd3-delaunay';
 
 @Component({
