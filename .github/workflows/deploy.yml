@@ -12,16 +12,14 @@ jobs:
     - name: Checkout do código
       uses: actions/checkout@v3
 
-    - name: Configurar Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '14'
+    - name: Instalar pnpm
+      run: npm install -g pnpm  # Instala o pnpm no ambiente do GitHub Actions
 
     - name: Instalar dependências
-      run: npm ci
+      run: pnpm install  # Substitui o npm install por pnpm install
 
     - name: Construir o projeto
-      run: npm run build -- --prod
+      run: pnpm run build -- --prod  # Usando pnpm para build
 
     - name: Deploy para GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
