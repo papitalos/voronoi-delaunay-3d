@@ -1,28 +1,30 @@
-name: Deploy Angular App to GitHub Pages
+name: Deploy Static Site to GitHub Pages
 
 on:
   push:
-    branches: [ master ]
+    branches: ["master"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout do código
-      uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-    - name: Instalar pnpm
-      run: npm install -g pnpm
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
 
-    - name: Instalar dependências
-      run: pnpm install
+      - name: Upload Static Files
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: src/  # Points to your static files in the 'src' directory
 
-    - name: Construir o projeto
-      run: pnpm run build --configuration production  # Correção aqui
-
-    - name: Deploy para GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist/voronoi-delaunay
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
