@@ -37,7 +37,7 @@
               "src/styles.scss"
             ],
             "scripts": [],
-            "baseHref": "/Voronoi-Delaunay-3D/"
+            "baseHref": "/voronoi-delaunay-3d/"
           },
           "configurations": {
             "production": {
