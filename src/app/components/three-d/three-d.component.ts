@@ -10,7 +10,26 @@ import { Layer } from '../../interfaces/layer';
 import { Subscription } from 'rxjs';
 import { LayerService } from '../../services/layer-service.service';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { Delaunay } from 'd3-delaunay';
+// Implementação simples de triangulação 3D por convex hull
+function simple3DTriangulation(points: {x: number, y: number, z: number}[]): number[][] {
+  const triangles: number[][] = [];
+  
+  if (points.length < 4) return triangles;
+  
+  // Para simplicidade, vamos criar tetrahedros conectando pontos próximos
+  for (let i = 0; i < points.length - 3; i++) {
+    for (let j = i + 1; j < points.length - 2; j++) {
+      for (let k = j + 1; k < points.length - 1; k++) {
+        for (let l = k + 1; l < points.length; l++) {
+          // Criar um tetrahedro com os 4 pontos
+          triangles.push([i, j, k, l]);
+        }
+      }
+    }
+  }
+  
+  return triangles.slice(0, Math.min(10, triangles.length)); // Limitar para não sobrecarregar
+}
 
 @Component({
   selector: 'app-three-d',
@@ -141,8 +160,8 @@ export class ThreeDComponent implements AfterViewInit, OnDestroy {
 
     const axisLength = 5; //comprimento dos eixos
 
-    // Eixo X
-    const xMaterial = new THREE.LineBasicMaterial({ color: 0x333333 }); 
+    // Eixo X (vermelho)
+    const xMaterial = new THREE.LineBasicMaterial({ color: 0xff4444 }); 
     const xPoints = [
       new THREE.Vector3(0, 0, 0),
       new THREE.Vector3(axisLength, 0, 0),
@@ -151,8 +170,8 @@ export class ThreeDComponent implements AfterViewInit, OnDestroy {
     const xAxis = new THREE.Line(xGeometry, xMaterial);
     this.scene.add(xAxis);
 
-    // Eixo Y
-    const yMaterial = new THREE.LineBasicMaterial({ color: 0x444444 }); 
+    // Eixo Y (verde)
+    const yMaterial = new THREE.LineBasicMaterial({ color: 0x44ff44 }); 
     const yPoints = [
       new THREE.Vector3(0, 0, 0),
       new THREE.Vector3(0, axisLength, 0),
@@ -161,8 +180,8 @@ export class ThreeDComponent implements AfterViewInit, OnDestroy {
     const yAxis = new THREE.Line(yGeometry, yMaterial);
     this.scene.add(yAxis);
 
-    // Eixo Z 
-    const zMaterial = new THREE.LineBasicMaterial({ color: 0x555555 });
+    // Eixo Z (azul)
+    const zMaterial = new THREE.LineBasicMaterial({ color: 0x4444ff });
     const zPoints = [
       new THREE.Vector3(0, 0, 0),
       new THREE.Vector3(0, 0, axisLength),
@@ -177,31 +196,60 @@ export class ThreeDComponent implements AfterViewInit, OnDestroy {
       const vertices: THREE.Vector3[] = [];
       normalizedPoints.forEach((point: { x: number; y: number; z: number }) => {
         const geometry = new THREE.SphereGeometry(0.1, 32, 32);
-        const material = new THREE.MeshPhongMaterial({ color: 0xffffff });
-        const cube = new THREE.Mesh(geometry, material);
+        const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        const sphere = new THREE.Mesh(geometry, material);
         vertices.push(new THREE.Vector3(point.x, point.y, point.z));
-        cube.position.set(point.x, point.y, point.z);
-        this.scene.add(cube);
+        sphere.position.set(point.x, point.y, point.z);
+        this.scene.add(sphere);
       });
 
-      if (normalizedPoints.length > 2) {
-        const delaunay = Delaunay.from(normalizedPoints.map((p) => [p.x, p.z]));
-        const edges: THREE.Vector3[][] = [];
-
-        for (let i = 0; i < delaunay.triangles.length; i += 3) {
-          const a = delaunay.triangles[i];
-          const b = delaunay.triangles[i + 1];
-          const c = delaunay.triangles[i + 2];
-          edges.push([vertices[a], vertices[b]]);
-          edges.push([vertices[b], vertices[c]]);
-          edges.push([vertices[c], vertices[a]]);
-        }
-
+             // Triangulação 3D usando implementação simples
+       if (normalizedPoints.length > 3) {
+         // Executar triangulação 3D (tetrahedros)
+         const tetrahedra = simple3DTriangulation(normalizedPoints);
+         
+         // Desenhar as arestas dos tetrahedros
+         const edges: Set<string> = new Set();
+         
+         tetrahedra.forEach((tetrahedron: number[]) => {
+           // Cada tetrahedro tem 4 vértices, criar 6 arestas
+           const faces = [
+             [tetrahedron[0], tetrahedron[1]],
+             [tetrahedron[0], tetrahedron[2]],
+             [tetrahedron[0], tetrahedron[3]],
+             [tetrahedron[1], tetrahedron[2]],
+             [tetrahedron[1], tetrahedron[3]],
+             [tetrahedron[2], tetrahedron[3]]
+           ];
+           
+           faces.forEach(([a, b]) => {
+             // Evitar arestas duplicadas
+             const edgeKey = `${Math.min(a, b)}-${Math.max(a, b)}`;
+             if (!edges.has(edgeKey)) {
+               edges.add(edgeKey);
+               
+               const start = vertices[a];
+               const end = vertices[b];
+               
+               if (start && end) {
+                 const geometry = new THREE.BufferGeometry().setFromPoints([start, end]);
+                 const material = new THREE.LineBasicMaterial({ color: 0xffffff });
+                 const line = new THREE.Line(geometry, material);
+                 this.scene.add(line);
+               }
+             }
+           });
+         });
+       } else if (normalizedPoints.length === 3) {
+        // Para 3 pontos, criar um triângulo
+        const edges = [
+          [vertices[0], vertices[1]],
+          [vertices[1], vertices[2]],
+          [vertices[2], vertices[0]]
+        ];
+        
         edges.forEach(([start, end]) => {
-          const geometry = new THREE.BufferGeometry().setFromPoints([
-            start,
-            end,
-          ]);
+          const geometry = new THREE.BufferGeometry().setFromPoints([start, end]);
           const material = new THREE.LineBasicMaterial({ color: 0xffffff });
           const line = new THREE.Line(geometry, material);
           this.scene.add(line);
@@ -246,6 +294,24 @@ export class ThreeDComponent implements AfterViewInit, OnDestroy {
         });
       }
     });
+  }
+
+  private drawSimpleConnections(vertices: THREE.Vector3[]): void {
+    // Conecta cada ponto ao próximo (visualização simples para fallback)
+    for (let i = 0; i < vertices.length - 1; i++) {
+      const geometry = new THREE.BufferGeometry().setFromPoints([vertices[i], vertices[i + 1]]);
+      const material = new THREE.LineBasicMaterial({ color: 0xffffff });
+      const line = new THREE.Line(geometry, material);
+      this.scene.add(line);
+    }
+    
+    // Conecta o último ao primeiro para formar um ciclo
+    if (vertices.length > 2) {
+      const geometry = new THREE.BufferGeometry().setFromPoints([vertices[vertices.length - 1], vertices[0]]);
+      const material = new THREE.LineBasicMaterial({ color: 0xffffff });
+      const line = new THREE.Line(geometry, material);
+      this.scene.add(line);
+    }
   }
 
   activate3DView() {

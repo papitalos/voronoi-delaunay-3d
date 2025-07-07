@@ -16,16 +16,19 @@
 }
 .layer-list {
   z-index: 99999;
-  display: none;
+  display: flex;
   flex-direction: column;
   padding: 0 10px;
   overflow-y: auto;
-  height: 720px;
+  height: 400px;
   width: 364px;
   border: 1px solid var(--border);
   background-color: var(--background-secondary);
   border-radius: 16px;
   z-index: 2;
+  opacity: 0;
+  transform: translateX(100%);
+  pointer-events: none;
   & .btn-add {
     padding: 16px;
     align-self: flex-end;
@@ -116,32 +119,33 @@
 }
 
 .layer-list.show {
-  animation: slideIn 0.5s forwards;
+  animation: slideIn 0.3s ease-out forwards;
 }
 .layer-list.hide {
-  animation: slideOut 0.5s forwards;
+  animation: slideOut 0.3s ease-in forwards;
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0%);
+    pointer-events: auto;
+  }
 }
 
 @keyframes slideOut {
   0% {
-    opacity: 100%;
+    opacity: 1;
     transform: translateX(0%);
-    display: flex;
   }
   100% {
-    opacity: 0%;
+    opacity: 0;
     transform: translateX(100%);
-  }
-}
-@keyframes slideIn {
-  0% {
-    opacity: 0%;
-    transform: translateX(100%);
-  }
-  100% {
-    opacity: 100%;
-    transform: translateX(0%);
-    display: none;
+    pointer-events: none;
   }
 }
 

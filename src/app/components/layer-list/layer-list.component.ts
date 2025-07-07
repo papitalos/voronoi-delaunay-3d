@@ -63,18 +63,12 @@ addLayer(): void {
 
     let layerList = document.querySelector('.layer-list') as HTMLElement;
 
-    //toggle da classe "show" no elemento para aplicar animações
     if (this.layerListActive) {
-      layerList.classList.add('show');
-      layerList.style.display = 'flex';
       layerList.classList.remove('hide');
+      layerList.classList.add('show');
     } else {
-      layerList.classList.add('hide');
       layerList.classList.remove('show');
-
-      setTimeout(() => {
-        layerList.style.display = 'none';
-      }, 300);
+      layerList.classList.add('hide');
     }
   }
 
