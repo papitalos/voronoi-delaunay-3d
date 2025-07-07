@@ -1,4 +1,6 @@
 # 🔺 Voronoi-Delaunay 3D
+Link Online: https://papitalos.github.io/voronoi-delaunay-3d/
+
 
 > Projeto Angular showcasing visualização 3D interativa com diagramas de Voronoi e triangulação de Delaunay. Desenvolvido para explorar conceitos matemáticos e algoritmos geométricos em um contexto tridimensional.
 
